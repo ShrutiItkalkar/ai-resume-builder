@@ -1,13 +1,11 @@
 require('dotenv').config();
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+const prisma = require('./src/prisma');
 
 async function main() {
   // Create a test user
   const user = await prisma.user.create({
     data: {
-      email: 'test2@example.com',
+      email: `test_${Date.now()}@example.com`,
       passwordHash: 'temporary_not_hashed_yet',
       name: 'Test User',
     },
