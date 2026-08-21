@@ -8,7 +8,7 @@ const tools = [
     title: 'Improve Resume',
     description: 'Get AI-powered suggestions to enhance your resume content, tone, and impact.',
     color: '#7C5CFC',
-    bg: '#F3F0FF',
+    bg: 'var(--primary-light)',
     badge: 'Popular',
   },
   {
@@ -17,7 +17,7 @@ const tools = [
     title: 'Generate Summary',
     description: 'Craft a compelling professional summary tailored to your target role.',
     color: '#3B82F6',
-    bg: '#EFF6FF',
+    bg: 'rgba(59, 130, 246, 0.15)',
   },
   {
     id: 'ats',
@@ -25,7 +25,7 @@ const tools = [
     title: 'ATS Analysis',
     description: 'Analyze your resume against job descriptions to maximize ATS pass rate.',
     color: '#10B981',
-    bg: '#ECFDF5',
+    bg: 'rgba(16, 185, 129, 0.15)',
     badge: 'New',
   },
   {
@@ -34,7 +34,7 @@ const tools = [
     title: 'Skill Suggestions',
     description: 'Discover in-demand skills for your industry and level to add to your profile.',
     color: '#F59E0B',
-    bg: '#FFFBEB',
+    bg: 'rgba(245, 158, 11, 0.15)',
   },
   {
     id: 'experience',
@@ -42,7 +42,7 @@ const tools = [
     title: 'Experience Enhancement',
     description: 'Transform your job descriptions into powerful, achievement-driven bullet points.',
     color: '#EF4444',
-    bg: '#FEF2F2',
+    bg: 'rgba(239, 68, 68, 0.15)',
   },
   {
     id: 'keywords',
@@ -50,7 +50,7 @@ const tools = [
     title: 'Keyword Optimizer',
     description: 'Identify and integrate the right keywords to pass recruiter filters.',
     color: '#8B5CF6',
-    bg: '#F5F3FF',
+    bg: 'rgba(139, 92, 246, 0.15)',
   },
 ];
 
@@ -105,7 +105,7 @@ export default function AiToolsPage() {
 
       {/* Tools Grid */}
       <div>
-        <h3 style={{ margin: '0 0 1.25rem 0', fontSize: '1.1rem', fontWeight: '700', color: '#17151F' }}>
+        <h3 style={{ margin: '0 0 1.25rem 0', fontSize: '1.1rem', fontWeight: '700', color: 'var(--text-main)' }}>
           Available Tools
         </h3>
         <div style={{
@@ -119,9 +119,9 @@ export default function AiToolsPage() {
               <div
                 key={tool.id}
                 style={{
-                  backgroundColor: '#FFFFFF',
+                  backgroundColor: 'var(--card-bg)',
                   borderRadius: '16px',
-                  border: '1px solid #E9E6F2',
+                  border: '1px solid var(--border-color)',
                   padding: '1.5rem',
                   cursor: 'pointer',
                   transition: 'box-shadow 0.2s ease, transform 0.2s ease',
@@ -129,7 +129,7 @@ export default function AiToolsPage() {
                   overflow: 'hidden',
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.boxShadow = '0 8px 28px rgba(124,92,252,0.12)';
+                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
                   e.currentTarget.style.transform = 'translateY(-3px)';
                 }}
                 onMouseLeave={e => {
@@ -158,10 +158,10 @@ export default function AiToolsPage() {
                   <Icon size={22} />
                 </div>
 
-                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', fontWeight: '700', color: '#17151F' }}>
+                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', fontWeight: '700', color: 'var(--text-main)' }}>
                   {tool.title}
                 </h4>
-                <p style={{ margin: '0 0 1.25rem 0', fontSize: '0.85rem', color: '#6B6875', lineHeight: '1.55' }}>
+                <p style={{ margin: '0 0 1.25rem 0', fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.55' }}>
                   {tool.description}
                 </p>
 
@@ -179,20 +179,20 @@ export default function AiToolsPage() {
 
       {/* Coming Soon */}
       <div style={{
-        backgroundColor: '#F8F7FC', border: '1px solid #E9E6F2', borderRadius: '16px',
+        backgroundColor: 'var(--card-bg)', border: '1px solid var(--border-color)', borderRadius: '16px',
         padding: '1.5rem 2rem', display: 'flex', alignItems: 'center', gap: '1rem',
       }}>
         <div style={{
-          width: '44px', height: '44px', borderRadius: '12px', backgroundColor: '#E9E6F2',
-          color: '#6B6875', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+          width: '44px', height: '44px', borderRadius: '12px', backgroundColor: 'var(--primary-light)',
+          color: '#7C5CFC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
         }}>
           <Zap size={20} />
         </div>
         <div>
-          <div style={{ fontWeight: '700', color: '#17151F', fontSize: '0.9rem' }}>
+          <div style={{ fontWeight: '700', color: 'var(--text-main)', fontSize: '0.9rem' }}>
             More AI tools coming soon
           </div>
-          <div style={{ color: '#6B6875', fontSize: '0.82rem', marginTop: '0.2rem' }}>
+          <div style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', marginTop: '0.2rem' }}>
             Cover letter generation, LinkedIn optimization, interview prep, and more are on the roadmap.
           </div>
         </div>

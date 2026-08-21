@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Sparkles, UserPlus } from 'lucide-react';
+import { FileCheck, UserPlus } from 'lucide-react';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -30,34 +30,34 @@ export default function SignupPage() {
   };
 
   return (
-    <div style={{ maxWidth: '420px', margin: '0 auto', paddingTop: '1rem' }}>
+    <div style={{ maxWidth: '420px', margin: '0 auto', paddingTop: '2rem' }}>
       {/* Brand */}
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
         <div style={{
-          width: '50px', height: '50px', borderRadius: '14px',
-          background: 'linear-gradient(135deg, #7C5CFC 0%, #9B8AFB 100%)',
+          width: '52px', height: '52px', borderRadius: '14px',
+          backgroundColor: '#3D2E21',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: '#FFFFFF', margin: '0 auto 1rem', boxShadow: '0 6px 16px rgba(124,92,252,0.3)',
+          color: '#F7F3EA', margin: '0 auto 1rem', boxShadow: '0 6px 16px rgba(61,46,33,0.2)',
         }}>
-          <Sparkles size={24} />
+          <FileCheck size={26} />
         </div>
-        <h2 style={{ margin: '0 0 0.35rem', fontSize: '1.5rem', fontWeight: '800', color: '#17151F' }}>
+        <h2 style={{ margin: '0 0 0.35rem', fontSize: '1.6rem', fontWeight: '800', color: 'var(--text-main)' }}>
           Create your account
         </h2>
-        <p style={{ margin: 0, color: '#9CA3AF', fontSize: '0.875rem' }}>
-          Start building AI-powered resumes for free
+        <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+          Build your next career opportunity.
         </p>
       </div>
 
       {/* Card */}
       <div style={{
-        backgroundColor: '#FFFFFF', borderRadius: '20px', border: '1px solid #E9E6F2',
-        padding: '2rem', boxShadow: '0 4px 24px rgba(23,21,31,0.07)',
+        backgroundColor: 'var(--card-bg)', borderRadius: '20px', border: '1px solid var(--border-color)',
+        padding: '2.25rem', boxShadow: 'var(--shadow-md)',
       }}>
         {error && (
           <div style={{
             padding: '0.75rem 1rem', marginBottom: '1.25rem',
-            backgroundColor: '#FEF2F2', color: '#DC2626',
+            backgroundColor: 'var(--error-bg)', color: 'var(--error)',
             borderRadius: '10px', fontSize: '0.875rem', fontWeight: '500',
             border: '1px solid #FCA5A5',
           }}>
@@ -65,7 +65,7 @@ export default function SignupPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
           <div>
             <label htmlFor="name">Full Name</label>
             <input
@@ -100,7 +100,7 @@ export default function SignupPage() {
             type="submit"
             disabled={isSubmitting}
             className="btn-primary"
-            style={{ width: '100%', padding: '0.75rem', marginTop: '0.25rem', fontSize: '0.9rem' }}
+            style={{ width: '100%', padding: '0.8rem', marginTop: '0.35rem', fontSize: '0.9rem' }}
           >
             <UserPlus size={16} />
             {isSubmitting ? 'Creating account...' : 'Create Account'}
@@ -108,9 +108,9 @@ export default function SignupPage() {
         </form>
       </div>
 
-      <p style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.875rem', color: '#9CA3AF' }}>
+      <p style={{ marginTop: '1.75rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
         Already have an account?{' '}
-        <Link to="/login" style={{ color: '#7C5CFC', fontWeight: '600' }}>Sign in</Link>
+        <Link to="/login" style={{ color: '#8B7355', fontWeight: '700' }}>Sign in</Link>
       </p>
     </div>
   );

@@ -13,7 +13,9 @@ import {
   Eye,
   Trash2,
   MoreVertical,
-  CheckCircle2,
+  ChevronDown,
+  LayoutGrid,
+  List,
 } from 'lucide-react';
 
 export default function ResumeDashboard() {
@@ -25,6 +27,7 @@ export default function ResumeDashboard() {
   const [error, setError] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
   const [activeMenuId, setActiveMenuId] = useState(null);
+  const [viewMode, setViewMode] = useState('grid');
 
   const fetchResumes = async () => {
     setIsLoading(true);
@@ -55,7 +58,6 @@ export default function ResumeDashboard() {
     }
   };
 
-  // Calculate dynamic stats
   const totalResumes = resumes.length;
   const lastUpdatedText = resumes.length > 0 ? 'Today' : 'N/A';
   const aiImprovementsCount = resumes.filter((r) => r.generatedContent && r.generatedContent.length > 0).length * 4 + 8;
@@ -70,211 +72,320 @@ export default function ResumeDashboard() {
         onCancel={() => setDeletingId(null)}
       />
 
-      {/* Greeting Banner & Main CTA */}
+      {/* Main Feature Banner Card */}
       <div
         style={{
-          backgroundColor: '#FFFFFF',
-          padding: '2rem 2.25rem',
-          borderRadius: '16px',
-          border: '1px solid #E9E6F2',
-          boxShadow: '0 2px 4px rgba(23, 21, 31, 0.03)',
+          backgroundColor: '#F5EFE4',
+          borderRadius: '20px',
+          border: '1px solid #E5DED2',
+          padding: '2.5rem 3rem',
           display: 'flex',
-          justify: 'space-between',
+          justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
-          gap: '1.5rem',
+          gap: '2rem',
+          position: 'relative',
+          overflow: 'hidden',
+          boxShadow: 'var(--shadow-sm)',
         }}
       >
-        <div>
-          <h1
+        <div style={{ maxWidth: '480px', zIndex: 2 }}>
+          <h2
             style={{
-              margin: '0 0 0.4rem 0',
-              fontSize: '1.65rem',
+              margin: '0 0 0.6rem 0',
+              fontSize: '1.5rem',
               fontWeight: '800',
-              color: '#17151F',
-              letterSpacing: '-0.03em',
+              color: 'var(--text-main)',
+              letterSpacing: '-0.02em',
             }}
           >
-            Good morning, {user?.name || 'Developer'} 👋
-          </h1>
-          <p style={{ margin: 0, fontSize: '0.95rem', color: '#6B6875' }}>
-            Build a resume that gets you noticed by top engineering teams and ATS screeners.
+            Create your next standout resume
+          </h2>
+          <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.925rem', color: 'var(--text-secondary)', lineHeight: '1.55' }}>
+            Get AI-powered suggestions, optimize for ATS, and land your dream job.
           </p>
+
+          <button
+            onClick={() => navigate('/resume/new')}
+            style={{
+              backgroundColor: '#3D2E21',
+              color: '#FFFFFF',
+              border: 'none',
+              padding: '0.75rem 1.4rem',
+              borderRadius: '10px',
+              fontWeight: '700',
+              fontSize: '0.9rem',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              boxShadow: '0 4px 12px rgba(61,46,33,0.2)',
+            }}
+          >
+            <Plus size={16} />
+            Create New Resume
+          </button>
         </div>
 
-        <button
-          onClick={() => navigate('/resume/new')}
-          className="btn-primary"
+        {/* Right Graphical Representation Mockup */}
+        <div
           style={{
-            padding: '0.75rem 1.4rem',
-            fontSize: '0.95rem',
-            borderRadius: '10px',
+            position: 'relative',
+            width: '240px',
+            height: '160px',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '16px',
+            boxShadow: '0 10px 25px rgba(61,46,33,0.08)',
+            border: '1px solid #E5DED2',
+            padding: '1.25rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.75rem',
+            transform: 'rotate(-2deg)',
           }}
+          className="hidden md:flex"
         >
-          <Plus size={18} />
-          Create New Resume
-        </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{ width: '38px', height: '38px', borderRadius: '50%', backgroundColor: '#E9DFCF' }} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', flex: 1 }}>
+              <div style={{ height: '8px', width: '70%', backgroundColor: '#3D2E21', borderRadius: '4px' }} />
+              <div style={{ height: '6px', width: '50%', backgroundColor: '#9A9388', borderRadius: '3px' }} />
+            </div>
+          </div>
+          <div style={{ height: '1px', backgroundColor: '#E5DED2', marginBlock: '0.2rem' }} />
+          <div style={{ height: '6px', width: '90%', backgroundColor: '#D4C9B8', borderRadius: '3px' }} />
+          <div style={{ height: '6px', width: '80%', backgroundColor: '#E5DED2', borderRadius: '3px' }} />
+          <div style={{ height: '6px', width: '60%', backgroundColor: '#E5DED2', borderRadius: '3px' }} />
+        </div>
       </div>
 
-      {/* Minimal Statistics Cards */}
+      {/* 4 Statistics Cards */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
           gap: '1.25rem',
         }}
       >
+        {/* Stat 1 */}
         <div
           style={{
-            backgroundColor: '#FFFFFF',
-            padding: '1.25rem 1.5rem',
-            borderRadius: '14px',
-            border: '1px solid #E9E6F2',
+            backgroundColor: 'var(--card-bg)',
+            padding: '1.35rem 1.5rem',
+            borderRadius: '16px',
+            border: '1px solid var(--border-color)',
             display: 'flex',
             alignItems: 'center',
             gap: '1rem',
+            boxShadow: 'var(--shadow-sm)',
           }}
         >
           <div
+            className="icon-box-center"
             style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '10px',
-              backgroundColor: '#F3F0FF',
-              color: '#7C5CFC',
-              display: 'flex',
-              alignItems: 'center',
-              justify: 'center',
+              width: '44px',
+              height: '44px',
+              borderRadius: '12px',
+              backgroundColor: '#F1EBDD',
+              color: '#3D2E21',
             }}
           >
             <FileText size={20} />
           </div>
           <div>
-            <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6B6875', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: '0.72rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               Total Resumes
             </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#17151F', marginTop: '0.1rem' }}>
+            <div style={{ fontSize: '1.4rem', fontWeight: '800', color: 'var(--text-main)', marginTop: '0.1rem' }}>
               {totalResumes}
+            </div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.1rem' }}>
+              {totalResumes > 0 ? `${totalResumes} active` : 'Start building!'}
             </div>
           </div>
         </div>
 
+        {/* Stat 2 */}
         <div
           style={{
-            backgroundColor: '#FFFFFF',
-            padding: '1.25rem 1.5rem',
-            borderRadius: '14px',
-            border: '1px solid #E9E6F2',
+            backgroundColor: 'var(--card-bg)',
+            padding: '1.35rem 1.5rem',
+            borderRadius: '16px',
+            border: '1px solid var(--border-color)',
             display: 'flex',
             alignItems: 'center',
             gap: '1rem',
+            boxShadow: 'var(--shadow-sm)',
           }}
         >
           <div
+            className="icon-box-center"
             style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '10px',
-              backgroundColor: '#F0FDF4',
-              color: '#22C55E',
-              display: 'flex',
-              alignItems: 'center',
-              justify: 'center',
+              width: '44px',
+              height: '44px',
+              borderRadius: '12px',
+              backgroundColor: '#E8F3EA',
+              color: '#6F8A72',
             }}
           >
             <Clock size={20} />
           </div>
           <div>
-            <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6B6875', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: '0.72rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               Last Updated
             </div>
-            <div style={{ fontSize: '1.2rem', fontWeight: '700', color: '#17151F', marginTop: '0.1rem' }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--text-main)', marginTop: '0.1rem' }}>
               {lastUpdatedText}
+            </div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.1rem' }}>
+              {resumes.length > 0 ? 'Recently saved' : 'No resumes yet'}
             </div>
           </div>
         </div>
 
+        {/* Stat 3 */}
         <div
           style={{
-            backgroundColor: '#FFFFFF',
-            padding: '1.25rem 1.5rem',
-            borderRadius: '14px',
-            border: '1px solid #E9E6F2',
+            backgroundColor: 'var(--card-bg)',
+            padding: '1.35rem 1.5rem',
+            borderRadius: '16px',
+            border: '1px solid var(--border-color)',
             display: 'flex',
             alignItems: 'center',
             gap: '1rem',
+            boxShadow: 'var(--shadow-sm)',
           }}
         >
           <div
+            className="icon-box-center"
             style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '10px',
-              backgroundColor: '#F3F0FF',
-              color: '#7C5CFC',
-              display: 'flex',
-              alignItems: 'center',
-              justify: 'center',
+              width: '44px',
+              height: '44px',
+              borderRadius: '12px',
+              backgroundColor: '#FDF2E3',
+              color: '#B28A4A',
             }}
           >
             <Sparkles size={20} />
           </div>
           <div>
-            <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6B6875', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: '0.72rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               AI Improvements
             </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#17151F', marginTop: '0.1rem' }}>
+            <div style={{ fontSize: '1.4rem', fontWeight: '800', color: 'var(--text-main)', marginTop: '0.1rem' }}>
               {aiImprovementsCount}
+            </div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.1rem' }}>
+              This month
             </div>
           </div>
         </div>
 
+        {/* Stat 4 */}
         <div
           style={{
-            backgroundColor: '#FFFFFF',
-            padding: '1.25rem 1.5rem',
-            borderRadius: '14px',
-            border: '1px solid #E9E6F2',
+            backgroundColor: 'var(--card-bg)',
+            padding: '1.35rem 1.5rem',
+            borderRadius: '16px',
+            border: '1px solid var(--border-color)',
             display: 'flex',
             alignItems: 'center',
             gap: '1rem',
+            boxShadow: 'var(--shadow-sm)',
           }}
         >
           <div
+            className="icon-box-center"
             style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '10px',
-              backgroundColor: '#EFF6FF',
-              color: '#3B82F6',
-              display: 'flex',
-              alignItems: 'center',
-              justify: 'center',
+              width: '44px',
+              height: '44px',
+              borderRadius: '12px',
+              backgroundColor: '#F1EBDD',
+              color: '#8B7355',
             }}
           >
             <Target size={20} />
           </div>
           <div>
-            <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6B6875', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: '0.72rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               ATS Match Rate
             </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#17151F', marginTop: '0.1rem' }}>
+            <div style={{ fontSize: '1.4rem', fontWeight: '800', color: 'var(--text-main)', marginTop: '0.1rem' }}>
               85%
+            </div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.1rem' }}>
+              Keep it up!
             </div>
           </div>
         </div>
       </div>
 
-      {/* Resume List Section */}
+      {/* My Resumes List Section */}
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
-            <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '700', color: '#17151F' }}>
+            <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '800', color: 'var(--text-main)' }}>
               My Resumes
-            </h2>
-            <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.85rem', color: '#6B6875' }}>
+            </h3>
+            <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
               Manage, edit, and tailor your resumes.
             </p>
+          </div>
+
+          {/* Filter & View mode controls */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+            <button
+              style={{
+                backgroundColor: 'var(--card-bg)',
+                border: '1px solid var(--border-color)',
+                borderRadius: '10px',
+                padding: '0.5rem 0.9rem',
+                fontSize: '0.825rem',
+                fontWeight: '600',
+                color: 'var(--text-main)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                cursor: 'pointer',
+              }}
+            >
+              Recently Updated
+              <ChevronDown size={14} color="var(--text-muted)" />
+            </button>
+
+            <div style={{ display: 'flex', backgroundColor: 'var(--card-bg)', border: '1px solid var(--border-color)', borderRadius: '10px', padding: '0.15rem' }}>
+              <button
+                onClick={() => setViewMode('grid')}
+                className="icon-box-center"
+                style={{
+                  background: viewMode === 'grid' ? '#E9DFCF' : 'transparent',
+                  border: 'none',
+                  borderRadius: '8px',
+                  width: '32px',
+                  height: '32px',
+                  color: viewMode === 'grid' ? '#3D2E21' : 'var(--text-muted)',
+                  cursor: 'pointer',
+                }}
+              >
+                <LayoutGrid size={15} />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className="icon-box-center"
+                style={{
+                  background: viewMode === 'list' ? '#E9DFCF' : 'transparent',
+                  border: 'none',
+                  borderRadius: '8px',
+                  width: '32px',
+                  height: '32px',
+                  color: viewMode === 'list' ? '#3D2E21' : 'var(--text-muted)',
+                  cursor: 'pointer',
+                }}
+              >
+                <List size={15} />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -286,9 +397,9 @@ export default function ResumeDashboard() {
                 key={n}
                 style={{
                   height: '190px',
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '14px',
-                  border: '1px solid #E9E6F2',
+                  backgroundColor: 'var(--card-bg)',
+                  borderRadius: '16px',
+                  border: '1px solid var(--border-color)',
                   padding: '1.5rem',
                   animation: 'pulse 1.5s infinite',
                 }}
@@ -298,12 +409,12 @@ export default function ResumeDashboard() {
         ) : error ? (
           <div
             style={{
-              backgroundColor: '#FEF2F2',
+              backgroundColor: 'var(--error-bg)',
               border: '1px solid #FCA5A5',
               borderRadius: '12px',
               padding: '2rem',
               textAlign: 'center',
-              color: '#EF4444',
+              color: 'var(--error)',
             }}
           >
             <p style={{ fontWeight: '600', margin: '0 0 1rem 0' }}>Error: {error}</p>
@@ -312,39 +423,56 @@ export default function ResumeDashboard() {
             </button>
           </div>
         ) : resumes.length === 0 ? (
-          /* Empty State */
+          /* Empty State Matching Mockup */
           <div
             style={{
-              backgroundColor: '#FFFFFF',
-              border: '2px dashed #E9E6F2',
-              borderRadius: '16px',
-              padding: '4rem 2rem',
+              backgroundColor: '#FAF8F4',
+              border: '2px dashed var(--border-color)',
+              borderRadius: '20px',
+              padding: '4.5rem 2rem',
               textAlign: 'center',
+              position: 'relative',
+              overflow: 'hidden',
             }}
           >
             <div
+              className="icon-box-center"
               style={{
-                width: '64px',
-                height: '64px',
+                width: '60px',
+                height: '60px',
                 borderRadius: '50%',
-                backgroundColor: '#F3F0FF',
-                color: '#7C5CFC',
-                display: 'flex',
-                alignItems: 'center',
-                justify: 'center',
+                backgroundColor: '#F1EBDD',
+                color: '#3D2E21',
                 margin: '0 auto 1.25rem auto',
               }}
             >
-              <FileText size={32} />
+              <FileText size={28} />
             </div>
-            <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.3rem', fontWeight: '700', color: '#17151F' }}>
+            <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem', fontWeight: '800', color: 'var(--text-main)' }}>
               No resumes yet
             </h3>
-            <p style={{ margin: '0 0 1.75rem 0', color: '#6B6875', maxWidth: '420px', marginLeft: 'auto', marginRight: 'auto' }}>
-              Create your first resume and start building your next career opportunity with AI optimization.
+            <p style={{ margin: '0 0 1.75rem 0', color: 'var(--text-secondary)', maxWidth: '400px', marginLeft: 'auto', marginRight: 'auto', fontSize: '0.9rem', lineHeight: '1.5' }}>
+              Create your first resume and start building your next career opportunity.
             </p>
-            <button onClick={() => navigate('/resume/new')} className="btn-primary" style={{ padding: '0.75rem 1.5rem' }}>
-              <Plus size={18} />
+            <button
+              onClick={() => navigate('/resume/new')}
+              style={{
+                backgroundColor: '#3D2E21',
+                color: '#FFFFFF',
+                border: 'none',
+                padding: '0.75rem 1.5rem',
+                borderRadius: '10px',
+                fontWeight: '700',
+                fontSize: '0.9rem',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem',
+                boxShadow: '0 4px 12px rgba(61,46,33,0.2)',
+              }}
+            >
+              <Plus size={16} />
               Create Resume
             </button>
           </div>
@@ -355,33 +483,52 @@ export default function ResumeDashboard() {
               <div
                 key={resume.id}
                 style={{
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '14px',
-                  border: '1px solid #E9E6F2',
+                  backgroundColor: 'var(--card-bg)',
+                  borderRadius: '16px',
+                  border: '1px solid var(--border-color)',
                   padding: '1.5rem',
-                  boxShadow: '0 2px 4px rgba(23, 21, 31, 0.03)',
+                  boxShadow: 'var(--shadow-sm)',
                   display: 'flex',
                   flexDirection: 'column',
-                  justify: 'space-between',
+                  justifyContent: 'space-between',
                   transition: 'transform 0.15s ease, box-shadow 0.15s ease',
                   position: 'relative',
                 }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = 'var(--shadow-md)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'translateY(0)'; }}
               >
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
-                    <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '700', color: '#17151F' }}>
-                      {resume.title}
-                    </h3>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <div
+                        className="icon-box-center"
+                        style={{
+                          width: '38px', height: '38px', borderRadius: '10px',
+                          backgroundColor: '#F1EBDD', color: '#3D2E21',
+                        }}
+                      >
+                        <FileText size={18} />
+                      </div>
+                      <div>
+                        <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: 'var(--text-main)' }}>
+                          {resume.title}
+                        </h4>
+                        <p style={{ margin: '0.15rem 0 0 0', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                          Updated {new Date(resume.updatedAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
 
                     {/* Secondary Actions Menu */}
                     <div style={{ position: 'relative' }}>
                       <button
                         onClick={() => setActiveMenuId(activeMenuId === resume.id ? null : resume.id)}
+                        className="icon-box-center"
                         style={{
                           background: 'none',
                           border: 'none',
                           padding: '0.2rem',
-                          color: '#9CA3AF',
+                          color: 'var(--text-muted)',
                           cursor: 'pointer',
                           borderRadius: '4px',
                         }}
@@ -395,10 +542,10 @@ export default function ResumeDashboard() {
                             position: 'absolute',
                             right: 0,
                             top: '100%',
-                            backgroundColor: '#FFFFFF',
-                            border: '1px solid #E9E6F2',
-                            borderRadius: '8px',
-                            boxShadow: '0 4px 12px rgba(23, 21, 31, 0.1)',
+                            backgroundColor: 'var(--card-bg)',
+                            border: '1px solid var(--border-color)',
+                            borderRadius: '10px',
+                            boxShadow: 'var(--shadow-md)',
                             zIndex: 20,
                             width: '140px',
                             overflow: 'hidden',
@@ -414,7 +561,7 @@ export default function ResumeDashboard() {
                               padding: '0.6rem 0.9rem',
                               backgroundColor: 'transparent',
                               border: 'none',
-                              color: '#EF4444',
+                              color: 'var(--error)',
                               fontSize: '0.85rem',
                               fontWeight: '600',
                               textAlign: 'left',
@@ -432,22 +579,18 @@ export default function ResumeDashboard() {
                     </div>
                   </div>
 
-                  <p style={{ margin: '0 0 1rem 0', fontSize: '0.8rem', color: '#6B6875' }}>
-                    Last updated {new Date(resume.updatedAt).toLocaleDateString()}
-                  </p>
-
                   {/* Skills tags */}
                   {Array.isArray(resume.skills) && resume.skills.length > 0 && (
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginBottom: '1.25rem' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginBlock: '1rem' }}>
                       {resume.skills.slice(0, 4).map((skill, idx) => (
                         <span
                           key={idx}
                           style={{
-                            backgroundColor: '#F3F0FF',
-                            color: '#7C5CFC',
+                            backgroundColor: '#F1EBDD',
+                            color: '#3D2E21',
                             padding: '0.2rem 0.6rem',
-                            borderRadius: '12px',
-                            fontSize: '0.75rem',
+                            borderRadius: '8px',
+                            fontSize: '0.72rem',
                             fontWeight: '600',
                           }}
                         >
@@ -455,7 +598,7 @@ export default function ResumeDashboard() {
                         </span>
                       ))}
                       {resume.skills.length > 4 && (
-                        <span style={{ fontSize: '0.75rem', color: '#9CA3AF', padding: '0.2rem 0.4rem' }}>
+                        <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', padding: '0.2rem 0.4rem' }}>
                           +{resume.skills.length - 4} more
                         </span>
                       )}
@@ -464,7 +607,7 @@ export default function ResumeDashboard() {
                 </div>
 
                 {/* Card Primary Buttons */}
-                <div style={{ display: 'flex', gap: '0.6rem', paddingTop: '0.75rem', borderTop: '1px solid #F8F7FC' }}>
+                <div style={{ display: 'flex', gap: '0.6rem', paddingTop: '0.75rem', borderTop: '1px solid var(--border-color)' }}>
                   <button
                     onClick={() => navigate(`/resume/${resume.id}/edit`)}
                     className="btn-primary"

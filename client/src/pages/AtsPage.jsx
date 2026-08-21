@@ -12,10 +12,10 @@ const suggestions = [
 ];
 
 const categories = [
-  { label: 'Keywords', score: 72, color: '#7C5CFC', bg: '#F3F0FF' },
-  { label: 'Formatting', score: 88, color: '#10B981', bg: '#ECFDF5' },
-  { label: 'Completeness', score: 65, color: '#F59E0B', bg: '#FFFBEB' },
-  { label: 'Impact', score: 55, color: '#EF4444', bg: '#FEF2F2' },
+  { label: 'Keywords', score: 72, color: '#7C5CFC', bg: 'var(--primary-light)' },
+  { label: 'Formatting', score: 88, color: '#10B981', bg: 'rgba(16, 185, 129, 0.15)' },
+  { label: 'Completeness', score: 65, color: '#F59E0B', bg: 'rgba(245, 158, 11, 0.15)' },
+  { label: 'Impact', score: 55, color: '#EF4444', bg: 'rgba(239, 68, 68, 0.15)' },
 ];
 
 function ScoreRing({ score }) {
@@ -31,7 +31,7 @@ function ScoreRing({ score }) {
       <svg width={radius * 2} height={radius * 2} style={{ transform: 'rotate(-90deg)' }}>
         <circle
           cx={radius} cy={radius} r={normalizedRadius}
-          fill="none" stroke="#E9E6F2" strokeWidth={stroke}
+          fill="none" stroke="var(--border-color)" strokeWidth={stroke}
         />
         <circle
           cx={radius} cy={radius} r={normalizedRadius}
@@ -43,8 +43,8 @@ function ScoreRing({ score }) {
         />
       </svg>
       <div style={{ position: 'absolute', textAlign: 'center' }}>
-        <div style={{ fontSize: '2.25rem', fontWeight: '800', color: '#17151F', lineHeight: 1 }}>{score}</div>
-        <div style={{ fontSize: '0.75rem', color: '#6B6875', fontWeight: '600' }}>/ 100</div>
+        <div style={{ fontSize: '2.25rem', fontWeight: '800', color: 'var(--text-main)', lineHeight: 1 }}>{score}</div>
+        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '600' }}>/ 100</div>
       </div>
     </div>
   );
@@ -62,9 +62,9 @@ export default function AtsPage() {
 
       {/* Score Overview */}
       <div style={{
-        backgroundColor: '#FFFFFF', borderRadius: '20px', border: '1px solid #E9E6F2',
+        backgroundColor: 'var(--card-bg)', borderRadius: '20px', border: '1px solid var(--border-color)',
         padding: '2.5rem', display: 'flex', gap: '3rem', alignItems: 'center', flexWrap: 'wrap',
-        boxShadow: '0 2px 8px rgba(23,21,31,0.04)',
+        boxShadow: 'var(--shadow-sm)',
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
           <ScoreRing score={overallScore} />
@@ -80,11 +80,11 @@ export default function AtsPage() {
         </div>
 
         <div style={{ flex: 1, minWidth: '240px' }}>
-          <h2 style={{ margin: '0 0 0.4rem 0', fontSize: '1.4rem', fontWeight: '800', color: '#17151F' }}>
+          <h2 style={{ margin: '0 0 0.4rem 0', fontSize: '1.4rem', fontWeight: '800', color: 'var(--text-main)' }}>
             ATS Compatibility Score
           </h2>
-          <p style={{ margin: '0 0 1.75rem 0', color: '#6B6875', fontSize: '0.9rem' }}>
-            Your resume scores <strong style={{ color: '#17151F' }}>{overallScore}/100</strong> for ATS compatibility. Follow the suggestions below to improve your score and get past applicant tracking systems.
+          <p style={{ margin: '0 0 1.75rem 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+            Your resume scores <strong style={{ color: 'var(--text-main)' }}>{overallScore}/100</strong> for ATS compatibility. Follow the suggestions below to improve your score and get past applicant tracking systems.
           </p>
 
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
@@ -106,17 +106,17 @@ export default function AtsPage() {
 
       {/* Category Breakdown */}
       <div>
-        <h3 style={{ margin: '0 0 1.25rem 0', fontSize: '1.05rem', fontWeight: '700', color: '#17151F' }}>
+        <h3 style={{ margin: '0 0 1.25rem 0', fontSize: '1.05rem', fontWeight: '700', color: 'var(--text-main)' }}>
           Score Breakdown
         </h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem' }}>
           {categories.map((cat) => (
             <div key={cat.label} style={{
-              backgroundColor: '#FFFFFF', borderRadius: '14px', border: '1px solid #E9E6F2',
+              backgroundColor: 'var(--card-bg)', borderRadius: '14px', border: '1px solid var(--border-color)',
               padding: '1.25rem 1.5rem',
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: '600', color: '#4B4855' }}>{cat.label}</span>
+                <span style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-secondary)' }}>{cat.label}</span>
                 <span style={{
                   fontSize: '0.9rem', fontWeight: '800', color: cat.color,
                   backgroundColor: cat.bg, padding: '0.15rem 0.6rem', borderRadius: '8px',
@@ -125,7 +125,7 @@ export default function AtsPage() {
                 </span>
               </div>
               {/* Progress bar */}
-              <div style={{ height: '6px', backgroundColor: '#F3F4F6', borderRadius: '3px', overflow: 'hidden' }}>
+              <div style={{ height: '6px', backgroundColor: 'var(--border-color)', borderRadius: '3px', overflow: 'hidden' }}>
                 <div style={{
                   height: '100%', width: `${cat.score}%`, backgroundColor: cat.color,
                   borderRadius: '3px', transition: 'width 1s ease',
@@ -138,7 +138,7 @@ export default function AtsPage() {
 
       {/* Suggestions */}
       <div>
-        <h3 style={{ margin: '0 0 1.25rem 0', fontSize: '1.05rem', fontWeight: '700', color: '#17151F' }}>
+        <h3 style={{ margin: '0 0 1.25rem 0', fontSize: '1.05rem', fontWeight: '700', color: 'var(--text-main)' }}>
           Improvement Suggestions
         </h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -147,7 +147,7 @@ export default function AtsPage() {
             const isWarning = s.type === 'warning';
             const Icon = isError ? AlertCircle : isWarning ? TrendingUp : CheckCircle2;
             const color = isError ? '#EF4444' : isWarning ? '#F59E0B' : '#10B981';
-            const bg = isError ? '#FEF2F2' : isWarning ? '#FFFBEB' : '#ECFDF5';
+            const bg = isError ? 'rgba(239, 68, 68, 0.1)' : isWarning ? 'rgba(245, 158, 11, 0.1)' : 'rgba(16, 185, 129, 0.1)';
             const border = isError ? '#FCA5A5' : isWarning ? '#FCD34D' : '#6EE7B7';
 
             return (
@@ -157,7 +157,7 @@ export default function AtsPage() {
                 borderRadius: '12px', padding: '1rem 1.25rem',
               }}>
                 <Icon size={18} style={{ color, flexShrink: 0, marginTop: '0.1rem' }} />
-                <span style={{ fontSize: '0.875rem', color: '#374151', lineHeight: '1.5' }}>
+                <span style={{ fontSize: '0.875rem', color: 'var(--text-main)', lineHeight: '1.5' }}>
                   {s.text}
                 </span>
               </div>
@@ -168,16 +168,16 @@ export default function AtsPage() {
 
       {/* CTA */}
       <div style={{
-        background: 'linear-gradient(135deg, #F3F0FF 0%, #EFF6FF 100%)',
-        border: '1px solid #E9E6F2', borderRadius: '16px',
+        background: 'linear-gradient(135deg, var(--primary-light) 0%, var(--card-bg) 100%)',
+        border: '1px solid var(--border-color)', borderRadius: '16px',
         padding: '1.75rem 2rem',
         display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem',
       }}>
         <div>
-          <div style={{ fontWeight: '700', fontSize: '1rem', color: '#17151F', marginBottom: '0.3rem' }}>
+          <div style={{ fontWeight: '700', fontSize: '1rem', color: 'var(--text-main)', marginBottom: '0.3rem' }}>
             Ready to boost your score?
           </div>
-          <div style={{ color: '#6B6875', fontSize: '0.85rem' }}>
+          <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
             Apply AI suggestions to your resume and re-run the ATS analysis.
           </div>
         </div>

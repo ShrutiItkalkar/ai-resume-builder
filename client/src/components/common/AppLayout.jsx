@@ -11,7 +11,7 @@ export default function AppLayout({ children, title, subtitle, hideSidebar = fal
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', backgroundColor: '#F8F7FC' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', backgroundColor: 'var(--bg)', transition: 'background-color 0.2s ease' }}>
       {/* Sidebar */}
       {!hideSidebar && (
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
