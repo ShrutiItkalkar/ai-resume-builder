@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { Wrench, Save, Check, X, Plus } from 'lucide-react';
 
 export default function SkillsSection({ resume, onSave, isLoading }) {
   const [skillsText, setSkillsText] = useState(
     Array.isArray(resume?.skills) ? resume.skills.join(', ') : ''
   );
-  const [message, setMessage] = useState('');
+  const [newSkill, setNewSkill] = useState('');
+  const [savedSuccess, setSavedSuccess] = useState(false);
 
   useEffect(() => {
     if (Array.isArray(resume?.skills)) {
@@ -12,75 +14,129 @@ export default function SkillsSection({ resume, onSave, isLoading }) {
     }
   }, [resume?.skills]);
 
+  const skillsList = skillsText
+    .split(',')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+
+  const handleAddSkill = (e) => {
+    e.preventDefault();
+    if (!newSkill.trim()) return;
+    const updated = Array.from(new Set([...skillsList, newSkill.trim()]));
+    setSkillsText(updated.join(', '));
+    setNewSkill('');
+  };
+
+  const handleRemoveSkill = (skillToRemove) => {
+    const updated = skillsList.filter((s) => s !== skillToRemove);
+    setSkillsText(updated.join(', '));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('');
-    const skillsArray = skillsText
-      .split(',')
-      .map((s) => s.trim())
-      .filter((s) => s.length > 0);
-
+    setSavedSuccess(false);
     try {
-      await onSave({ skills: skillsArray });
-      setMessage('Skills updated successfully.');
-      setTimeout(() => setMessage(''), 3000);
+      await onSave({ skills: skillsList });
+      setSavedSuccess(true);
+      setTimeout(() => setSavedSuccess(false), 3000);
     } catch (err) {
       alert(`Error saving skills: ${err.message}`);
     }
   };
 
   return (
-    <div style={{ backgroundColor: '#fff', padding: '1.5rem', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '1.5rem' }}>
-      <h3 style={{ marginTop: 0, marginBottom: '1rem', color: '#1e293b' }}>Skills</h3>
-      
-      {message && <div style={{ padding: '0.5rem', marginBottom: '1rem', background: '#f0fdf4', color: '#15803d', borderRadius: '4px' }}>{message}</div>}
-
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '1rem' }}>
-          <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.5rem' }} htmlFor="skills-input">
-            Skills (Comma-separated)
-          </label>
-          <input
-            id="skills-input"
-            type="text"
-            value={skillsText}
-            onChange={(e) => setSkillsText(e.target.value)}
-            placeholder="React, Node.js, Express, PostgreSQL, Prisma, Tailwind CSS, Git"
-            style={{ width: '100%', padding: '0.6rem', border: '1px solid #cbd5e1', borderRadius: '4px', boxSizing: 'border-box' }}
-            disabled={isLoading}
-          />
+    <div
+      style={{
+        backgroundColor: '#FFFFFF',
+        borderRadius: '16px',
+        border: '1px solid #E9E6F2',
+        padding: '2rem',
+        boxShadow: '0 2px 4px rgba(23, 21, 31, 0.03)',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', borderBottom: '1px solid #F8F7FC', paddingBottom: '1rem' }}>
+        <div style={{ width: '36px', height: '36px', borderRadius: '10px', backgroundColor: '#F3F0FF', color: '#7C5CFC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Wrench size={20} />
         </div>
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
-          {skillsText.split(',').map((skill, index) => {
-            const trimmed = skill.trim();
-            if (!trimmed) return null;
-            return (
-              <span
-                key={index}
-                style={{
-                  backgroundColor: '#e0f2fe',
-                  color: '#0369a1',
-                  padding: '0.25rem 0.6rem',
-                  borderRadius: '16px',
-                  fontSize: '0.85rem',
-                  fontWeight: 500
-                }}
-              >
-                {trimmed}
-              </span>
-            );
-          })}
+        <div>
+          <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: '700', color: '#17151F' }}>
+            Technical & Professional Skills
+          </h3>
+          <p style={{ margin: '0.1rem 0 0 0', fontSize: '0.8rem', color: '#6B6875' }}>
+            Add relevant technical skills, frameworks, tools, and methodologies.
+          </p>
         </div>
+      </div>
 
-        <button
-          type="submit"
+      {savedSuccess && (
+        <div style={{ backgroundColor: '#F0FDF4', color: '#22C55E', padding: '0.75rem 1rem', borderRadius: '8px', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: '600' }}>
+          <Check size={16} /> Skills updated successfully!
+        </div>
+      )}
+
+      {/* Add Single Skill Row */}
+      <form onSubmit={handleAddSkill} style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem' }}>
+        <input
+          type="text"
+          value={newSkill}
+          onChange={(e) => setNewSkill(e.target.value)}
+          placeholder="Add a new skill (e.g. TypeScript, Docker, GraphQL)..."
           disabled={isLoading}
-          style={{ backgroundColor: '#2563eb', color: '#fff', border: 'none', padding: '0.6rem 1.2rem', borderRadius: '4px', cursor: isLoading ? 'not-allowed' : 'pointer' }}
-        >
-          {isLoading ? 'Saving...' : 'Save Skills'}
+          style={{ flex: 1 }}
+        />
+        <button type="submit" className="btn-secondary" disabled={isLoading || !newSkill.trim()}>
+          <Plus size={16} /> Add Skill
         </button>
       </form>
+
+      {/* Skills Pills List */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem', minHeight: '40px' }}>
+        {skillsList.length === 0 ? (
+          <p style={{ fontSize: '0.85rem', color: '#9CA3AF', fontStyle: 'italic' }}>No skills added yet.</p>
+        ) : (
+          skillsList.map((skill, index) => (
+            <span
+              key={index}
+              style={{
+                backgroundColor: '#F3F0FF',
+                color: '#7C5CFC',
+                border: '1px solid #E9E6F2',
+                padding: '0.35rem 0.75rem',
+                borderRadius: '20px',
+                fontSize: '0.85rem',
+                fontWeight: '600',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+              }}
+            >
+              {skill}
+              <button
+                type="button"
+                onClick={() => handleRemoveSkill(skill)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  color: '#9B8AFB',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <X size={14} />
+              </button>
+            </span>
+          ))
+        )}
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <button onClick={handleSubmit} className="btn-primary" disabled={isLoading}>
+          <Save size={16} />
+          {isLoading ? 'Saving...' : 'Save Skills'}
+        </button>
+      </div>
     </div>
   );
 }

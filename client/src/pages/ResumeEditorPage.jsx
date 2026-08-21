@@ -39,7 +39,6 @@ export default function ResumeEditorPage() {
     fetchResume();
   }, [id]);
 
-  // Save main resume fields (title, summary, jobDescription, skills)
   const handleSaveResumeFields = async (updatedFields) => {
     setIsSaving(true);
     try {
@@ -51,7 +50,6 @@ export default function ResumeEditorPage() {
     }
   };
 
-  // Experience handlers
   const handleAddExperience = async (expData) => {
     setIsSaving(true);
     try {
@@ -91,7 +89,6 @@ export default function ResumeEditorPage() {
     }
   };
 
-  // Education handlers
   const handleAddEducation = async (eduData) => {
     setIsSaving(true);
     try {
@@ -131,7 +128,6 @@ export default function ResumeEditorPage() {
     }
   };
 
-  // Handle initial creation
   const handleInitialCreate = async (formData) => {
     setIsSaving(true);
     try {
@@ -146,93 +142,93 @@ export default function ResumeEditorPage() {
 
   if (isNew) {
     return (
-      <div style={{ maxWidth: '700px', margin: '2rem auto', padding: '1.5rem', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-        <h2 style={{ marginTop: 0 }}>Create New Resume</h2>
-        <ResumeForm onSubmit={handleInitialCreate} onCancel={() => navigate('/dashboard')} isLoading={isSaving} />
+      <div style={{ maxWidth: '640px', margin: '0 auto' }}>
+        <div style={{
+          backgroundColor: '#fff',
+          borderRadius: '16px',
+          border: '1px solid #E9E6F2',
+          padding: '2rem',
+          boxShadow: '0 2px 8px rgba(23,21,31,0.05)',
+        }}>
+          <h2 style={{ marginTop: 0, marginBottom: '1.5rem', fontSize: '1.25rem', fontWeight: '700', color: '#17151F' }}>
+            Create New Resume
+          </h2>
+          <ResumeForm onSubmit={handleInitialCreate} onCancel={() => navigate('/dashboard')} isLoading={isSaving} />
+        </div>
       </div>
     );
   }
 
   if (isLoading) {
-    return <div style={{ textAlign: 'center', padding: '4rem' }}>Loading resume editor...</div>;
+    return (
+      <div style={{ textAlign: 'center', padding: '4rem', color: '#6B6875' }}>
+        Loading resume editor...
+      </div>
+    );
   }
 
   if (error || !resume) {
     return (
-      <div style={{ textAlign: 'center', padding: '4rem', color: '#dc2626' }}>
-        <h3>Error: {error || 'Resume not found'}</h3>
-        <button onClick={() => navigate('/dashboard')}>Back to Dashboard</button>
+      <div style={{ textAlign: 'center', padding: '4rem' }}>
+        <p style={{ color: '#EF4444', fontWeight: '600' }}>Error: {error || 'Resume not found'}</p>
+        <button className="btn-secondary" onClick={() => navigate('/dashboard')}>
+          Back to Dashboard
+        </button>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: '900px', margin: '2rem auto', padding: '0 1rem' }}>
-      {/* Header & Tab Switcher */}
-      <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-        <div>
-          <h2 style={{ margin: 0, color: '#0f172a' }}>{resume.title}</h2>
-          <span style={{ fontSize: '0.85rem', color: '#64748b' }}>Last updated: {new Date(resume.updatedAt).toLocaleDateString()}</span>
-        </div>
-
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <div style={{ backgroundColor: '#e2e8f0', padding: '0.2rem', borderRadius: '6px', display: 'flex' }}>
-            <button
-              onClick={() => setActiveTab('edit')}
-              style={{
-                backgroundColor: activeTab === 'edit' ? '#fff' : 'transparent',
-                color: activeTab === 'edit' ? '#0f172a' : '#64748b',
-                border: 'none',
-                padding: '0.4rem 0.8rem',
-                borderRadius: '4px',
-                fontWeight: activeTab === 'edit' ? 'bold' : 'normal',
-                cursor: 'pointer'
-              }}
-            >
-              ✏️ Editor
-            </button>
-            <button
-              onClick={() => setActiveTab('preview')}
-              style={{
-                backgroundColor: activeTab === 'preview' ? '#fff' : 'transparent',
-                color: activeTab === 'preview' ? '#0f172a' : '#64748b',
-                border: 'none',
-                padding: '0.4rem 0.8rem',
-                borderRadius: '4px',
-                fontWeight: activeTab === 'preview' ? 'bold' : 'normal',
-                cursor: 'pointer'
-              }}
-            >
-              👁️ Preview
-            </button>
-          </div>
-
-          <button
-            onClick={() => window.print()}
-            style={{
-              backgroundColor: '#059669',
-              color: '#fff',
-              border: 'none',
-              padding: '0.5rem 1rem',
-              borderRadius: '6px',
-              fontWeight: 'bold',
-              cursor: 'pointer'
-            }}
-          >
-            📥 Export / Print PDF
-          </button>
-
-          <button
-            onClick={() => navigate('/dashboard')}
-            style={{ padding: '0.5rem 1rem', border: '1px solid #cbd5e1', borderRadius: '6px', cursor: 'pointer', backgroundColor: '#fff' }}
-          >
-            &larr; Dashboard
-          </button>
-        </div>
+    <div style={{ maxWidth: '860px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '0' }}>
+      {/* Tab Switcher */}
+      <div className="no-print" style={{
+        display: 'flex',
+        gap: '0.5rem',
+        marginBottom: '1.5rem',
+        backgroundColor: '#F8F7FC',
+        padding: '0.35rem',
+        borderRadius: '10px',
+        border: '1px solid #E9E6F2',
+        width: 'fit-content',
+      }}>
+        <button
+          onClick={() => setActiveTab('edit')}
+          style={{
+            padding: '0.5rem 1.25rem',
+            fontSize: '0.875rem',
+            fontWeight: '600',
+            borderRadius: '7px',
+            border: 'none',
+            cursor: 'pointer',
+            backgroundColor: activeTab === 'edit' ? '#FFFFFF' : 'transparent',
+            color: activeTab === 'edit' ? '#17151F' : '#6B6875',
+            boxShadow: activeTab === 'edit' ? '0 1px 3px rgba(23,21,31,0.1)' : 'none',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          ✏️ Editor
+        </button>
+        <button
+          onClick={() => setActiveTab('preview')}
+          style={{
+            padding: '0.5rem 1.25rem',
+            fontSize: '0.875rem',
+            fontWeight: '600',
+            borderRadius: '7px',
+            border: 'none',
+            cursor: 'pointer',
+            backgroundColor: activeTab === 'preview' ? '#FFFFFF' : 'transparent',
+            color: activeTab === 'preview' ? '#17151F' : '#6B6875',
+            boxShadow: activeTab === 'preview' ? '0 1px 3px rgba(23,21,31,0.1)' : 'none',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          👁️ Preview
+        </button>
       </div>
 
       {activeTab === 'edit' ? (
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <ResumeDetailsSection resume={resume} onSave={handleSaveResumeFields} isLoading={isSaving} />
           <AiGenerationSection resume={resume} onApplyGeneratedContent={handleSaveResumeFields} />
           <SummarySection resume={resume} onSave={handleSaveResumeFields} isLoading={isSaving} />
@@ -251,7 +247,7 @@ export default function ResumeEditorPage() {
             onDelete={handleDeleteEducation}
             isLoading={isSaving}
           />
-        </>
+        </div>
       ) : (
         <ResumePreview resume={resume} />
       )}

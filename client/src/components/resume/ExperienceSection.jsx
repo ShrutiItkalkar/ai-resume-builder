@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Briefcase, Plus, Edit2, Trash2, Save, X } from 'lucide-react';
 
 export default function ExperienceSection({ experiences = [], onAdd, onUpdate, onDelete, isLoading }) {
   const [isAdding, setIsAdding] = useState(false);
@@ -72,63 +73,114 @@ export default function ExperienceSection({ experiences = [], onAdd, onUpdate, o
   };
 
   return (
-    <div style={{ backgroundColor: '#fff', padding: '1.5rem', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '1.5rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <h3 style={{ margin: 0, color: '#1e293b' }}>Work Experience</h3>
+    <div
+      style={{
+        backgroundColor: '#FFFFFF',
+        borderRadius: '16px',
+        border: '1px solid #E9E6F2',
+        padding: '2rem',
+        boxShadow: '0 2px 4px rgba(23, 21, 31, 0.03)',
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid #F8F7FC', paddingBottom: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ width: '36px', height: '36px', borderRadius: '10px', backgroundColor: '#F3F0FF', color: '#7C5CFC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Briefcase size={20} />
+          </div>
+          <div>
+            <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: '700', color: '#17151F' }}>
+              Work Experience
+            </h3>
+            <p style={{ margin: '0.1rem 0 0 0', fontSize: '0.8rem', color: '#6B6875' }}>
+              Highlight your previous software engineering roles, internships, and key achievements.
+            </p>
+          </div>
+        </div>
+
         {!isAdding && !editingId && (
-          <button
-            onClick={() => setIsAdding(true)}
-            style={{ backgroundColor: '#059669', color: '#fff', border: 'none', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer' }}
-          >
-            + Add Experience
+          <button onClick={() => setIsAdding(true)} className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+            <Plus size={16} /> Add Experience
           </button>
         )}
       </div>
 
       {/* Existing list */}
       {experiences.length === 0 && !isAdding && (
-        <p style={{ color: '#64748b', fontStyle: 'italic' }}>No work experience added yet.</p>
+        <p style={{ color: '#9CA3AF', fontStyle: 'italic', fontSize: '0.9rem' }}>No work experience entries added yet.</p>
       )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1rem' }}>
         {experiences.map((exp) => (
-          <div key={exp.id} style={{ border: '1px solid #e2e8f0', borderRadius: '6px', padding: '1rem', backgroundColor: editingId === exp.id ? '#f8fafc' : '#fff' }}>
+          <div
+            key={exp.id}
+            style={{
+              border: '1px solid #E9E6F2',
+              borderRadius: '12px',
+              padding: '1.25rem',
+              backgroundColor: editingId === exp.id ? '#F8F7FC' : '#FFFFFF',
+            }}
+          >
             {editingId === exp.id ? (
-              <form onSubmit={handleSubmit}>
-                <h4 style={{ marginTop: 0 }}>Edit Experience</h4>
-                {error && <div style={{ color: 'red', marginBottom: '0.5rem' }}>{error}</div>}
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <h4 style={{ margin: '0 0 0.5rem 0', color: '#17151F' }}>Edit Experience Entry</h4>
+                {error && <div style={{ color: '#EF4444', fontSize: '0.85rem' }}>{error}</div>}
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                  <input placeholder="Company *" value={company} onChange={(e) => setCompany(e.target.value)} required />
-                  <input placeholder="Role / Title *" value={role} onChange={(e) => setRole(e.target.value)} required />
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', marginBottom: '0.3rem' }}>Company *</label>
+                    <input value={company} onChange={(e) => setCompany(e.target.value)} required placeholder="e.g. Acme Tech" />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', marginBottom: '0.3rem' }}>Role / Title *</label>
+                    <input value={role} onChange={(e) => setRole(e.target.value)} required placeholder="e.g. Software Engineer Intern" />
+                  </div>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                  <input placeholder="Start Date *" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
-                  <input placeholder="End Date (or Present)" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-                </div>
-                <textarea rows={3} placeholder="Description..." value={description} onChange={(e) => setDescription(e.target.value)} style={{ width: '100%', marginBottom: '0.5rem', boxSizing: 'border-box' }} />
 
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <button type="submit" disabled={isLoading}>{isLoading ? 'Saving...' : 'Update'}</button>
-                  <button type="button" onClick={resetForm} disabled={isLoading}>Cancel</button>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', marginBottom: '0.3rem' }}>Start Date *</label>
+                    <input value={startDate} onChange={(e) => setStartDate(e.target.value)} required placeholder="e.g. Jan 2024" />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', marginBottom: '0.3rem' }}>End Date</label>
+                    <input value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder="e.g. Jun 2024 (or Present)" />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', marginBottom: '0.3rem' }}>Description & Key Achievements</label>
+                  <textarea rows={3} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Describe key metrics, tech stack, and responsibilities..." />
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+                  <button type="button" onClick={resetForm} className="btn-secondary">Cancel</button>
+                  <button type="submit" className="btn-primary" disabled={isLoading}>{isLoading ? 'Saving...' : 'Update Entry'}</button>
                 </div>
               </form>
             ) : (
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div>
-                    <h4 style={{ margin: '0 0 0.25rem 0', color: '#0f172a' }}>{exp.role} <span style={{ fontWeight: 'normal', color: '#475569' }}>at {exp.company}</span></h4>
-                    <p style={{ margin: 0, fontSize: '0.85rem', color: '#64748b' }}>
-                      {exp.startDate} - {exp.endDate || 'Present'}
+                    <h4 style={{ margin: '0 0 0.25rem 0', fontSize: '1rem', color: '#17151F' }}>
+                      {exp.role} <span style={{ fontWeight: '500', color: '#6B6875' }}>at {exp.company}</span>
+                    </h4>
+                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#7C5CFC', fontWeight: '600' }}>
+                      {exp.startDate} &ndash; {exp.endDate || 'Present'}
                     </p>
                   </div>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button onClick={() => startEdit(exp)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.85rem' }}>Edit</button>
-                    <button onClick={() => handleDelete(exp.id)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.85rem', color: '#dc2626' }}>Delete</button>
+
+                  <div style={{ display: 'flex', gap: '0.4rem' }}>
+                    <button onClick={() => startEdit(exp)} className="btn-secondary" style={{ padding: '0.35rem 0.6rem', fontSize: '0.75rem' }}>
+                      <Edit2 size={13} /> Edit
+                    </button>
+                    <button onClick={() => handleDelete(exp.id)} className="btn-danger" style={{ padding: '0.35rem 0.6rem', fontSize: '0.75rem' }}>
+                      <Trash2 size={13} /> Delete
+                    </button>
                   </div>
                 </div>
+
                 {exp.description && (
-                  <p style={{ marginTop: '0.5rem', marginBottom: 0, fontSize: '0.9rem', whiteSpace: 'pre-line', color: '#334155' }}>
+                  <p style={{ marginTop: '0.65rem', marginBottom: 0, fontSize: '0.875rem', lineHeight: '1.5', color: '#4B4855', whiteSpace: 'pre-line' }}>
                     {exp.description}
                   </p>
                 )}
@@ -140,27 +192,40 @@ export default function ExperienceSection({ experiences = [], onAdd, onUpdate, o
 
       {/* Add New Form */}
       {isAdding && (
-        <form onSubmit={handleSubmit} style={{ border: '1px solid #2563eb', borderRadius: '6px', padding: '1rem', backgroundColor: '#eff6ff' }}>
-          <h4 style={{ marginTop: 0, color: '#1e40af' }}>Add Work Experience</h4>
-          {error && <div style={{ color: 'red', marginBottom: '0.5rem' }}>{error}</div>}
+        <form onSubmit={handleSubmit} style={{ border: '1px solid #7C5CFC', borderRadius: '12px', padding: '1.25rem', backgroundColor: '#F3F0FF' }}>
+          <h4 style={{ margin: '0 0 1rem 0', color: '#7C5CFC' }}>Add Work Experience</h4>
+          {error && <div style={{ color: '#EF4444', marginBottom: '0.75rem', fontSize: '0.85rem' }}>{error}</div>}
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <input placeholder="Company *" value={company} onChange={(e) => setCompany(e.target.value)} required style={{ padding: '0.5rem' }} />
-            <input placeholder="Role / Title *" value={role} onChange={(e) => setRole(e.target.value)} required style={{ padding: '0.5rem' }} />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', marginBottom: '0.3rem' }}>Company *</label>
+              <input value={company} onChange={(e) => setCompany(e.target.value)} required placeholder="e.g. Acme Tech" />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', marginBottom: '0.3rem' }}>Role / Title *</label>
+              <input value={role} onChange={(e) => setRole(e.target.value)} required placeholder="e.g. Software Engineer Intern" />
+            </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <input placeholder="Start Date (e.g. Jan 2023) *" value={startDate} onChange={(e) => setStartDate(e.target.value)} required style={{ padding: '0.5rem' }} />
-            <input placeholder="End Date (e.g. Present)" value={endDate} onChange={(e) => setEndDate(e.target.value)} style={{ padding: '0.5rem' }} />
-          </div>
-          <textarea rows={3} placeholder="Key achievements and duties..." value={description} onChange={(e) => setDescription(e.target.value)} style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem', boxSizing: 'border-box' }} />
 
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button type="submit" disabled={isLoading} style={{ backgroundColor: '#2563eb', color: '#fff', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px' }}>
-              {isLoading ? 'Adding...' : 'Save Experience'}
-            </button>
-            <button type="button" onClick={resetForm} disabled={isLoading} style={{ padding: '0.5rem 1rem' }}>
-              Cancel
-            </button>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', marginBottom: '0.3rem' }}>Start Date *</label>
+              <input value={startDate} onChange={(e) => setStartDate(e.target.value)} required placeholder="e.g. Jan 2024" />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', marginBottom: '0.3rem' }}>End Date</label>
+              <input value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder="e.g. Jun 2024 (or Present)" />
+            </div>
+          </div>
+
+          <div style={{ marginBottom: '1rem' }}>
+            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', marginBottom: '0.3rem' }}>Description & Key Achievements</label>
+            <textarea rows={3} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Describe key metrics, tech stack, and responsibilities..." />
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+            <button type="button" onClick={resetForm} className="btn-secondary">Cancel</button>
+            <button type="submit" className="btn-primary" disabled={isLoading}>{isLoading ? 'Adding...' : 'Save Experience'}</button>
           </div>
         </form>
       )}
