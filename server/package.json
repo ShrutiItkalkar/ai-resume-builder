@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test tests/api.test.js"
   },
   "keywords": [],
   "author": "",
@@ -17,11 +17,16 @@
     "@prisma/adapter-neon": "^7.9.1",
     "@prisma/client": "^6.16.2",
     "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "prisma": "^6.16.2",
     "ws": "^8.21.3",
     "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2",
+    "supertest": "^7.2.2"
   }
 }

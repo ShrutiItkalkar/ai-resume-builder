@@ -21,6 +21,7 @@ model Resume {
   userId           String
   user             User               @relation(fields: [userId], references: [id])
   title            String
+  summary          String?
   jobDescription   String?
   skills           String[]
   experiences      Experience[]

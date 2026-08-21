@@ -2,6 +2,7 @@ const { z } = require('zod');
 
 const resumeSchema = z.object({
     title: z.string().min(1, 'Title is required').max(100),
+    summary: z.string().max(2000).optional(),
     jobDescription: z.string().max(5000).optional(),
     skills: z.array(z.string()).optional(),
 });
